@@ -32,7 +32,21 @@ namespace MessageBoard.Controllers
       _db.Messages.Add(message);
       await _db.SaveChangesAsync();
 
-      return CreatedAtAction("Post", new { id = message.MessageId }, message);
+      return CreatedAtAction(nameof(GetMessage), new { id = message.MessageId }, message);
+    }
+
+    // GET: api/Messages/2
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Message>> GetMessage(int id)
+    {
+      var message = await _db.Messages.FindAsync(id);
+
+      if (message == null)
+      {
+        return NotFound();
+      }
+
+      return message;
     }
   }
 }
