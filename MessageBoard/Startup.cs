@@ -44,7 +44,8 @@ namespace MessageBoard
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MessageBoard v1"));
             }
 
-            app.UseHttpsRedirection();
+            // This method couases server to reroute all traffic to the HTTPS port of the server. This increases application security but it can cause browser to prevent access to the site and will slow us down when we're developing the project. 
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
