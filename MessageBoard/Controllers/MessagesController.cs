@@ -48,5 +48,46 @@ namespace MessageBoard.Controllers
 
       return message;
     }
+
+    // PUT: api/Messages/5
+    // We use an [HttpPut] annotation. This specifies that we'll determine which message will be updated based on the id parameter in the URL.
+    // PUT is like POST in that it makes a change to the server. However, PUT changes existing information while POST creates new information. 
+
+    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+    // [HttpPut] annotation specifies that we'll determine which animal will be updated based on the id parameter in the URL.    
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put(int id, Message message)
+    {
+      if (id != message.MessageId)
+      {
+        return BadRequest();
+      }
+
+      _db.Entry(message).State = EntityState.Modified;
+
+      try
+      {
+        await _db.SaveChangesAsync();
+      }
+      catch (DbUpdateConcurrencyException)
+      {
+        if (!MessageExists(id))
+        {
+          return NotFound();
+        }
+        else
+        {
+          throw;
+        }
+      }
+
+      return NoContent();
+    }
+
+    // created a private method, MessageExists, for use within the controller, to DRY up our code.
+    private bool MessageExists(int id)
+    {
+      return _db.Messages.Any(e => e.MessageId == id);
+    }    
   }
 }
