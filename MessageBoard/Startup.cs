@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MessageBoard.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace MessageBoard
 {
@@ -27,10 +30,18 @@ namespace MessageBoard
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddDbContext<MessageBoardContext>(opt =>
+                opt.UseMySql(Configuration["ConnectionStrings:DefaultConnection"], ServerVersion.AutoDetect(Configuration["ConnectionStrings:DefaultConnection"])));
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MessageBoard", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo 
+            {
+                Title = "MessageBoard", 
+                Version = "v1",
+                Description = "A message board api",
+                });
             });
         }
 
@@ -40,8 +51,15 @@ namespace MessageBoard
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MessageBoard v1"));
+                
+                app.UseSwagger(c =>
+                {
+                    c.SerializeAsV2 = true;
+                });
+                    app.UseSwaggerUI(c => 
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Messages v1");
+                });
             }
 
             // This method couases server to reroute all traffic to the HTTPS port of the server. This increases application security but it can cause browser to prevent access to the site and will slow us down when we're developing the project. 
