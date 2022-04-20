@@ -30,6 +30,7 @@ namespace MessageBoard.Controllers
     }
 
     // POST api/messages
+    [HttpPost]
     // Post route utilizes CreatedAtAction function so that it can end up returning the message object to the user as well as update the status code to 201 for "Created" rather than the default 200 OK
     public async Task<ActionResult<Message>> Post(Message message)
     {
