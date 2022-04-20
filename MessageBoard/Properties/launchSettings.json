@@ -12,8 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      // When using the dotnet new webapi command, your project comes with a default implementation of Swagger, a package that helps to document your routes. update the launch URL to the GET method of the controller
-      "launchUrl": "api/Messages",
+      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -22,8 +21,7 @@
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,
-      //When using the dotnet new webapi command, your project comes with a default implementation of Swagger, a package that helps to document your routes. update the launch URL to the GET method of the controller
-      "launchUrl": "api/Messages",
+      "launchUrl": "swagger",
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
