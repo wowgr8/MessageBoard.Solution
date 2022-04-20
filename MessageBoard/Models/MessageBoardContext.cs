@@ -24,14 +24,11 @@ namespace MessageBoard.Models
           new Message { MessageId = 1, Title = "Weekend Trip", To = "Woolly Mammoth", Pages = 7, From = "Filipe" },
           new Message { MessageId = 2, Title = "Airbnb", To = "You", Pages = 10, From = "Dan" },
           new Message { MessageId = 3, Title = "Class Schedule", To = "Shteve", Pages = 2, From = "Kimi" },
-          new Message { MessageId = 4, Title = "Pipes", To = "Shark", Pages = 4, From = "Stan" },
-          new Message { MessageId = 5, Title = "Binge Drinking 101", To = "Dinosaur", Pages = 22, From = "Foolio" }
+          new Message { MessageId = 4, Title = "Bag Pipes", To = "Shark", Pages = 4, From = "Stan" }
         );
     }
-
-    public DbSet<Message> Messages { get; set; }
-
     
-
+    public DbSet<Message> Messages { get; set; }
+    
   }
 }
