@@ -24,10 +24,63 @@ namespace MessageBoard.Controllers
     // GET api/messages
     [HttpGet]
     // Get route needs to return an ActionResult of type IEnumerable<message>>. In our web applications, we didn't need to specify a type because we were always returning a view.
-    public async Task<ActionResult<IEnumerable<Message>>> Get()
+    // public async Task<ActionResult<IEnumerable<Message>>> Get()
+    // {
+    //   return await _db.Messages.ToListAsync();
+    // }
+    public async Task<ActionResult<Pagination>> Get(string title, string to, string from, int page, int perPage, int pages)
     {
-      return await _db.Messages.ToListAsync();
+      IQueryable<Message> query = _db.Messages.AsQueryable();
+      if (title != null)
+      {
+        query = query.Where(entry => entry.Title == title);
+      }
+      if (to != null)
+      {
+        query = query.Where(entry => entry.To == to);
+      }
+      if (from != null)
+      {
+        query = query.Where(entry => entry.From == from);
+      }
+      if (pages != 0)
+      {
+        query = query.Where(entry => entry.Pages == pages);
+      }      
+
+      List<Message> messages = await query.ToListAsync();
+
+      if (perPage == 0) perPage = 2;
+
+      int total = messages.Count;
+      List<Message> messagesPage = new List<Message>();
+
+      if (page < (total / perPage))
+      {
+        messagesPage = messages.GetRange(page * perPage, perPage);
+      }
+
+      if (page == (total / perPage))
+      {
+        messagesPage = messages.GetRange(page * perPage, total - (page * perPage));
+      }
+
+      return new Pagination()
+      {
+        MessageData = messagesPage,
+        Total = total,
+        PerPage = perPage,
+        Page = page,
+        PreviousPage = page == 0 ? $"/api/Messages?page={page}" : $"/api/Messages?page={page - 1}",
+        NextPage = $"/api/Messages?page={page + 1}",
+      };
     }
+
+
+
+
+
+
 
     // POST api/messages
     [HttpPost]
